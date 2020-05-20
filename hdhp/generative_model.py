@@ -24,7 +24,7 @@ from numpy import asfortranarray, exp
 from numpy.random import RandomState
 from scipy.misc import logsumexp
 from sklearn.utils import check_random_state
-from utils import (qualitative_cmap, weighted_choice, monthly_labels,
+from .utils import (qualitative_cmap, weighted_choice, monthly_labels,
                    monthly_ticks_for_days, monthly_ticks_for_months,
                    month_add)
 
@@ -137,8 +137,8 @@ class HDHProcess:
                                                 replace=False)
             for word in words_in_pattern:
                 custom_theta[word] = 100. / self.words_per_pattern
-            sampled_params[pattern] = \
-                self.pattern_param_prng.dirichlet(custom_theta)
+            #custom_theta = [1.0,1.0]
+            sampled_params[pattern] = self.pattern_param_prng.dirichlet(custom_theta)
         return sampled_params
 
     def sample_time_kernels(self):
@@ -457,7 +457,7 @@ class HDHProcess:
                 % (pattern,
                    '\n'.join(['%s : %d' % (k, v)
                               for i, (k, v)
-                              in enumerate(sorted(self.per_pattern_word_counts[pattern].iteritems(),
+                              in enumerate(sorted(self.per_pattern_word_counts[pattern].items(),
                                                   key=lambda x: (x[1], x[0]),
                                                   reverse=True))
                               if v >= min_word_occurence
@@ -466,7 +466,7 @@ class HDHProcess:
                              ),
                    ' '.join([k
                              for i, (k, v)
-                             in enumerate(sorted(self.per_pattern_word_counts[pattern].iteritems(),
+                             in enumerate(sorted(self.per_pattern_word_counts[pattern].items(),
                                                  key=lambda x: (x[1], x[0]),
                                                  reverse=True))
                              if v < min_word_occurence
@@ -1022,13 +1022,13 @@ class HDHProcess:
                    '\n'.join(['%s : %d'
                               % (k, v)
                               for i, (k, v)
-                              in enumerate(sorted(self.per_pattern_word_counts[pattern].iteritems(),
+                              in enumerate(sorted(self.per_pattern_word_counts[pattern].items(),
                                                   key=lambda x: (x[1], x[0]),
                                                   reverse=True))
                               if v >= detail_threshold and (words == 0 or i < words)]
                              ),
                    ' '.join([k for i, (k, v)
-                             in enumerate(sorted(self.per_pattern_word_counts[pattern].iteritems(),
+                             in enumerate(sorted(self.per_pattern_word_counts[pattern].items(),
                                                  key=lambda x: (x[1], x[0]),
                                                  reverse=True))
                              if v < detail_threshold and (words == 0 or i < words)])

@@ -19,7 +19,7 @@ from numpy import log as ln, array, exp
 from numpy.random import RandomState
 from scipy.misc import logsumexp
 from scipy.special import gammaln
-from utils import copy_dict, weighted_choice
+from .utils import copy_dict, weighted_choice
 
 from hdhp import HDHProcess
 
@@ -444,7 +444,7 @@ class Particle(object):
     def sample_mu(self):
         """Samples a value from the prior of the base intensity mu.
 
-
+        
         Returns
         -------
         mu_u : float
@@ -681,6 +681,7 @@ def _infer_single_thread(history, params):
                     weights.append(exp(p_i.logweight - max_logweight))
                 total += weights[-1]
             normalized = [w / sum(weights) for w in weights]
+            
             # Check if resampling is needed
             norm2 = sum([w ** 2 for w in normalized])
             square_norms.append(norm2)
